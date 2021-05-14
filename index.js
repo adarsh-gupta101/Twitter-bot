@@ -5,6 +5,7 @@ dotenv.config();
 
 const app = express();
 var id = [];
+let i = 1;
 const T = new TWITTER({
   consumer_key: process.env.APIKEY,
 
@@ -15,39 +16,27 @@ const T = new TWITTER({
   access_token_secret: process.env.AccessTokenSECRET,
 });
 /*  */
-var stream = T.stream("statuses/filter", { track: "doge" });
-stream.on("tweet", function (tweet) {
+var stream = T.stream("statuses/filter", { track: "dogecoin" });
+var stream2 = T.stream("statuses/filter", { track: "bitcoin" });
+
+stream2.on("tweet", function (tweet) {
   T.post("statuses/retweet/:id", { id: tweet.id_str }, () => {
-    console.log("22");
+    console.log("kl");
   });
-  T.post("favorites/create", { id: tweet.id_str }, () => {
-    console.log(21);
+  T.post("favorites/create/:id", { id: tweet.id_str }, () => {
+    console.log("k");
   });
-  24;
 });
 
-const retweet = (alue, index, array) => {
-  T.post(
-    "statuses/retweet/:id",
-    {
-      id: String(alue),
-    },
-    function (err, data, response) {
-      console.log(alue.toString());
-      if (err) {
-        console.log(err);
-      }
-    }
-  );
-};
-/* T.post(
-    "statuses/retweet/:id",
-    { id: "343360866131001345" },
-    function (err, data, response) {
-      console.log(data);
-    }
-  );
-}; */
+stream.on("tweet", function (tweet) {
+  T.post("statuses/retweet/:id", { id: tweet.id_str }, () => {
+    console.log("mmmmm");
+  });
+  T.post("favorites/create/:id", { id: tweet.id_str }, () => {
+    console.log("kkk");
+  });
+});
+
 app.listen(process.env.PORT || 3000, () => {
   console.log("server is running for user");
 });
